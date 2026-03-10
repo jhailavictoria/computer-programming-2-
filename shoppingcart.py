@@ -1,69 +1,71 @@
-cart = {}
+class ShoppingCart:
+    def __init__(self):
+        self.cart = []
 
-def add_item():
-    item = input("Enter item name: ")
-    price = float(input("Enter item price: "))
-    quantity = int(input("Enter quantity: "))
+    def add_item(self, item):
+        self.cart.append(item)
+        print(f"{item.name} added to cart.")
 
-    if item in cart:
-        cart[item]["quantity"] += quantity
-    else:
-        cart[item] = {"price": price, "quantity": quantity}
+    def remove_item(self, item_name):
+        for item in self.cart:
+            if item.name.lower() == item_name.lower():
+                self.cart.remove(item)
+                print(f"{item_name} removed from cart.")
+                return
+        print("Item not found in cart.")
 
-    print(item, "added to cart.\n")
+    def view_cart(self):
+        if not self.cart:
+            print("Your cart is empty.")
+            return
 
+        print("\nItems in Cart:")
+        for item in self.cart:
+            print(f"{item.name} - Price: {item.price} x {item.quantity} = {item.total_price()}")
 
-def remove_item():
-    item = input("Enter item to remove: ")
-
-    if item in cart:
-        del cart[item]
-        print(item, "removed.\n")
-    else:
-        print("Item not found.\n")
-
-
-def view_cart():
-    total = 0
-    print("\n--- Shopping Cart ---")
-
-    for item, details in cart.items():
-        price = details["price"]
-        quantity = details["quantity"]
-        subtotal = price * quantity
-        total += subtotal
-
-        print(f"{item} | Price: {price} | Qty: {quantity} | Subtotal: {subtotal}")
-
-    print("Total:", total)
-    print()
+    def checkout(self):
+        total = sum(item.total_price() for item in self.cart)
+        print(f"\nTotal amount: {total}")
+        print("Thank you for shopping!")
+        self.cart.clear()
 
 
-def checkout():
-    view_cart()
-    print("Thank you for shopping!")
-    exit()
+def main():
+    cart = ShoppingCart()
+
+    while True:
+        print("\n--- Shopping Cart Menu ---")
+        print("1. Add Item")
+        print("2. Remove Item")
+        print("3. View Cart")
+        print("4. Checkout")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            name = input("Item name: ")
+            price = float(input("Item price: "))
+            quantity = int(input("Quantity: "))
+            item = Item(name, price, quantity)
+            cart.add_item(item)
+
+        elif choice == "2":
+            name = input("Enter item name to remove: ")
+            cart.remove_item(name)
+
+        elif choice == "3":
+            cart.view_cart()
+
+        elif choice == "4":
+            cart.checkout()
+
+        elif choice == "5":
+            print("Exiting program...")
+            break
+
+        else:
+            print("Invalid choice. Try again.")
 
 
-while True:
-    print("1. Add Item")
-    print("2. Remove Item")
-    print("3. View Cart")
-    print("4. Checkout")
-
-    choice = input("Choose option: ")
-
-    if choice == "1":
-        add_item()
-
-    elif choice == "2":
-        remove_item()
-
-    elif choice == "3":
-        view_cart()
-
-    elif choice == "4":
-        checkout()
-
-    else:
-        print("Invalid option\n")
+main()
