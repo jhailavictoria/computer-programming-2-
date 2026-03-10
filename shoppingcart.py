@@ -61,7 +61,7 @@ def main():
             cart.checkout()
 
         elif choice == "5":
-            print("Exiting program...")
+            print("Exiting program.")
             break
 
         else:
