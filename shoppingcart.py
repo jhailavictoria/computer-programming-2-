@@ -67,5 +67,3 @@ def main():
         else:
             print("Invalid choice. Try again.")
 
-
-main()
